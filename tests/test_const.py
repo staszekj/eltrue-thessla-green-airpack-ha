@@ -23,11 +23,11 @@ def _load(relative_path):
 
 # ── const.py tests (no HA dependencies) ─────────────────────────────────────
 
-const = _load("custom_components/airpack/const.py")
+const = _load("custom_components/eltrue_airpack_ha/const.py")
 
 
 def test_domain():
-    assert const.DOMAIN == "airpack"
+    assert const.DOMAIN == "eltrue_airpack_ha"
 
 
 def test_platforms_complete():
@@ -142,13 +142,13 @@ def _load_sensor():
         sys.modules[name] = stub
 
     const_spec = importlib.util.spec_from_file_location(
-        "_airpack_const", os.path.join(ROOT, "custom_components/airpack/const.py")
+        "_airpack_const", os.path.join(ROOT, "custom_components/eltrue_airpack_ha/const.py")
     )
     const_mod = importlib.util.module_from_spec(const_spec)
     sys.modules["custom_components"] = types.ModuleType("custom_components")
-    sys.modules["custom_components.airpack"] = types.ModuleType("custom_components.airpack")
-    sys.modules["custom_components.airpack.const"] = const_mod
-    sys.modules["custom_components.airpack.coordinator"] = types.SimpleNamespace(
+    sys.modules["custom_components.eltrue_airpack_ha"] = types.ModuleType("custom_components.eltrue_airpack_ha")
+    sys.modules["custom_components.eltrue_airpack_ha.const"] = const_mod
+    sys.modules["custom_components.eltrue_airpack_ha.coordinator"] = types.SimpleNamespace(
         AirPackCoordinator=_Subscriptable
     )
     # Also stub pymodbus so coordinator.py doesn't fail if ever imported
@@ -158,12 +158,12 @@ def _load_sensor():
     const_spec.loader.exec_module(const_mod)
 
     sensor_spec = importlib.util.spec_from_file_location(
-        "custom_components.airpack.sensor",
-        os.path.join(ROOT, "custom_components/airpack/sensor.py"),
+        "custom_components.eltrue_airpack_ha.sensor",
+        os.path.join(ROOT, "custom_components/eltrue_airpack_ha/sensor.py"),
         submodule_search_locations=[],
     )
     sensor_mod = importlib.util.module_from_spec(sensor_spec)
-    sys.modules["custom_components.airpack.sensor"] = sensor_mod
+    sys.modules["custom_components.eltrue_airpack_ha.sensor"] = sensor_mod
     sensor_spec.loader.exec_module(sensor_mod)
     return sensor_mod
 

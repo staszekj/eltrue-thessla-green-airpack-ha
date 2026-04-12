@@ -85,13 +85,13 @@ Tested with: **AirPack 450**, firmware **4.85**, gateway Waveshare RS485 to ETH 
 ### Via HACS (recommended)
 
 1. Open HACS → **Integrations** → three-dot menu → **Custom repositories**
-2. Add `https://github.com/staszekj/ha-airpack` with category **Integration**
+2. Add `https://github.com/staszekj/eltrue-airpack-ha` with category **Integration**
 3. Find and install **Thessla Green AirPack**
 4. Restart Home Assistant
 
 ### Manual
 
-Copy the `custom_components/airpack/` folder to your HA `config/custom_components/` directory and restart.
+Copy the `custom_components/eltrue_airpack_ha/` folder to your HA `config/custom_components/` directory and restart.
 
 ---
 

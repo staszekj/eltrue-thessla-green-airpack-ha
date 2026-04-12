@@ -1,6 +1,6 @@
 """Constants for the AirPack integration."""
 
-DOMAIN = "airpack"
+DOMAIN = "eltrue_airpack_ha"
 
 CONF_HOST = "host"
 CONF_PORT = "port"
