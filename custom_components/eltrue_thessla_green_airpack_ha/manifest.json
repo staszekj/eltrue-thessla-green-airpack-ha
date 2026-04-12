@@ -1,0 +1,12 @@
+{
+  "domain": "eltrue_thessla_green_airpack_ha",
+  "name": "Thessla Green AirPack",
+  "version": "1.0.0",
+  "documentation": "https://github.com/staszekj/eltrue-thessla-green-airpack-ha",
+  "issue_tracker": "https://github.com/staszekj/eltrue-thessla-green-airpack-ha/issues",
+  "integration_type": "device",
+  "config_flow": true,
+  "codeowners": ["@staszekj"],
+  "requirements": [],
+  "iot_class": "local_polling"
+}

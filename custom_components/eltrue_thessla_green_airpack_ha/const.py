@@ -1,6 +1,6 @@
 """Constants for the AirPack integration."""
 
-DOMAIN = "eltrue_airpack_ha"
+DOMAIN = "eltrue_thessla_green_airpack_ha"
 
 CONF_HOST = "host"
 CONF_PORT = "port"
