@@ -1,0 +1,21 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Konfiguracja AirPack",
+        "description": "Podaj dane dostępowe do bramki Modbus rekuperatora Thessla Green AirPack.",
+        "data": {
+          "host": "Adres IP bramki Modbus",
+          "port": "Port TCP",
+          "device_id": "ID urządzenia Modbus (slave)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Nie można połączyć się z bramką Modbus. Sprawdź adres IP i port."
+    },
+    "abort": {
+      "already_configured": "To urządzenie jest już skonfigurowane."
+    }
+  }
+}

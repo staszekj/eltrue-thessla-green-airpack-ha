@@ -1,0 +1,21 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Set up Thessla Green AirPack",
+        "description": "Enter the connection details for your Modbus TCP gateway.",
+        "data": {
+          "host": "Gateway IP address",
+          "port": "TCP port",
+          "device_id": "Modbus device ID (slave)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot connect to the Modbus gateway. Check the IP address and port."
+    },
+    "abort": {
+      "already_configured": "This device is already configured."
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "domain": "airpack",
+  "name": "Thessla Green AirPack",
+  "version": "1.0.0",
+  "documentation": "https://github.com/staszekj/ha-airpack",
+  "issue_tracker": "https://github.com/staszekj/ha-airpack/issues",
+  "integration_type": "device",
+  "config_flow": true,
+  "codeowners": ["@staszekj"],
+  "requirements": [],
+  "iot_class": "local_polling"
+}
