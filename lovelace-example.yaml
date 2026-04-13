@@ -1,0 +1,223 @@
+# Thessla Green AirPack — Dashboard Cards
+#
+# HOW TO USE:
+# 1. Open your HA dashboard → Edit → Add Card → Manual
+# 2. Copy the content of ONE card at a time (each top-level "- type:" block)
+# 3. Paste into the Manual Card YAML editor
+#
+# OR add all at once as a new view:
+# 1. Go to Settings → Dashboards → pick your dashboard
+# 2. Edit Dashboard → three-dot menu → Raw configuration editor
+# 3. Add this block under "views:" as a new view
+#
+# NOTE: Entity names assume default "rekuperator" prefix.
+# If you changed the device name during setup, adjust entity_id prefixes accordingly.
+
+title: Rekuperator AirPack
+path: rekuperator
+icon: mdi:air-filter
+cards:
+
+  # ── Status bar: ON/OFF, mode, season ──
+  - type: horizontal-stack
+    cards:
+      - type: entity
+        entity: switch.rekuperator
+        name: Rekuperator
+        icon: mdi:air-filter
+        state_color: true
+      - type: entity
+        entity: select.rekuperator_tryb
+        name: Tryb pracy
+        icon: mdi:state-machine
+      - type: entity
+        entity: select.rekuperator_sezon
+        name: Sezon
+        icon: mdi:weather-sunny-off
+
+  # ── Heat exchanger diagram (ASCII art with live data) ──
+  - type: markdown
+    content: >-
+      {% set tz1 = states('sensor.rekuperator_tz1') %}
+      {% set tn1 = states('sensor.rekuperator_tn1') %}
+      {% set tp  = states('sensor.rekuperator_tp')  %}
+      {% set to  = states('sensor.rekuperator_to')  %}
+      {% set sp  = states('sensor.rekuperator_sprawnosc') | float(0) | round(0) | int %}
+      {% set nav = states('sensor.rekuperator_nawiew_m3h') %}
+      {% set wyw = states('sensor.rekuperator_wywiew_m3h') %}
+
+      ```
+
+      ZEWN  TZ1={{ tz1 }}°C ──▶[≋≋≋≋≋≋≋≋≋≋]──▶ TN1={{ tn1 }}°C  POKOJE
+                    sprawność odzysku: {{ sp }}%
+      ATM.   TO={{ to }}°C  ◀──[≋≋≋≋≋≋≋≋≋≋]──◀  TP={{ tp }}°C  POKOJE
+          nawiew: {{ nav }} m³/h               wywiew: {{ wyw }} m³/h
+
+      ```
+
+      {% if is_state('binary_sensor.rekuperator_bypass_silownik', 'on') %}
+      ---
+      ⚠️ **BYPASS OTWARTY** – powietrze zewnętrzne omija wymiennik
+      {% endif %}
+      {% if states('sensor.rekuperator_fpx_status') != 'Wyłączony' %}
+      ---
+      🔥 **FPX aktywny:** {{ states('sensor.rekuperator_fpx_status') }}
+      {% endif %}
+
+  # ── Temperature list ──
+  - type: entities
+    title: Temperatury
+    state_color: true
+    entities:
+      - entity: sensor.rekuperator_tz1
+        name: TZ1 – zewnętrzna
+      - entity: sensor.rekuperator_tn1
+        name: TN1 – nawiewana
+      - entity: sensor.rekuperator_tp
+        name: TP – wywiewana
+      - entity: sensor.rekuperator_tz2
+        name: TZ2 – za nagrzewnicą FPX
+      - entity: sensor.rekuperator_to
+        name: TO – otoczenie
+      - type: divider
+      - entity: sensor.rekuperator_roznica_temperatur
+        name: Różnica TN1 – TP
+      - entity: sensor.rekuperator_sprawnosc
+        name: Sprawność rekuperatora
+
+  # ── Efficiency & temperature delta gauges ──
+  - type: horizontal-stack
+    cards:
+      - type: gauge
+        entity: sensor.rekuperator_sprawnosc
+        name: Sprawność odzysku
+        min: 0
+        max: 100
+        unit: "%"
+        needle: true
+        severity:
+          red: 0
+          yellow: 50
+          green: 70
+      - type: gauge
+        entity: sensor.rekuperator_roznica_temperatur
+        name: TN1 − TP
+        min: -15
+        max: 15
+        unit: "°C"
+        needle: true
+        severity:
+          red: -15
+          green: -8
+          yellow: 8
+
+  # ── Airflow gauges (%) ──
+  - type: horizontal-stack
+    cards:
+      - type: gauge
+        entity: sensor.rekuperator_nawiew_procent
+        name: Nawiew
+        min: 0
+        max: 100
+        unit: "%"
+        needle: true
+        severity:
+          green: 0
+          yellow: 80
+          red: 95
+      - type: gauge
+        entity: sensor.rekuperator_wywiew_procent
+        name: Wywiew
+        min: 0
+        max: 100
+        unit: "%"
+        needle: true
+        severity:
+          green: 0
+          yellow: 80
+          red: 95
+
+  # ── Airflow (m³/h) ──
+  - type: entities
+    title: Przepływ powietrza
+    entities:
+      - entity: sensor.rekuperator_nawiew_m3h
+        name: Nawiew
+        icon: mdi:arrow-right-circle-outline
+      - entity: sensor.rekuperator_wywiew_m3h
+        name: Wywiew
+        icon: mdi:arrow-left-circle-outline
+
+  # ── Controls ──
+  - type: entities
+    title: Sterowanie
+    entities:
+      - entity: number.rekuperator_intensywnosc
+        name: Intensywność (tryb manualny)
+      - type: divider
+      - entity: select.rekuperator_funkcje_specjalne
+        name: Tryb specjalny
+      - type: divider
+      - entity: sensor.rekuperator_bypass_temp_grzanie
+        name: Bypass – próg grzania
+      - entity: sensor.rekuperator_bypass_temp_chlodzenie
+        name: Bypass – próg chłodzenia
+
+  # ── Bypass explanation ──
+  - type: markdown
+    content: >-
+      ### Bypass
+
+      Bypass **omija wymiennik** — świeże powietrze trafia bezpośrednio
+      do pomieszczeń (brak odzysku ciepła).
+
+      **Free-cooling** (chłodzenie): aktywuje się gdy temp. wewn. > *próg
+      chłodzenia* i TZ1 jest chłodniejsze od powietrza w budynku.
+
+      **Free-heating** (dogrzewanie): aktywuje się gdy temp. wewn. < *próg
+      grzania* i TZ1 jest cieplejsze od powietrza w budynku.
+
+      Warunek wstępny: TZ1 > min. temp. zewn. dla otwarcia.
+
+  # ── Bypass status & settings ──
+  - type: entities
+    title: Bypass – stan i ustawienia
+    state_color: true
+    entities:
+      - entity: binary_sensor.rekuperator_bypass_silownik
+        name: Przepustnica
+      - entity: sensor.rekuperator_bypass_status
+        name: Aktywna funkcja
+      - entity: sensor.rekuperator_bypass_tryb_opis
+        name: Tryb pracy
+      - type: divider
+      - entity: sensor.rekuperator_bypass_min_temp
+        name: Min. temp. zewn. TZ1 (warunek otwarcia)
+      - entity: sensor.rekuperator_bypass_temp_grzanie
+        name: "Free-heating: próg temp. wewn."
+      - entity: sensor.rekuperator_bypass_temp_chlodzenie
+        name: "Free-cooling: próg temp. wewn."
+
+  # ── FPX pre-heater ──
+  - type: entities
+    title: FPX – nagrzewnica elektryczna
+    state_color: true
+    entities:
+      - entity: sensor.rekuperator_fpx_status
+        name: Status FPX
+      - entity: sensor.rekuperator_tz2
+        name: TZ2 – temp. za nagrzewnicą
+
+  # ── Device info (nameplate) ──
+  - type: markdown
+    content: >-
+      ## Tabliczka znamionowa
+
+      | | |
+      |---|---|
+      | **Producent** | Thessla Green |
+      | **Model** | {{ states('sensor.rekuperator_model') }} |
+      | **Nr seryjny sterownika** | {{ states('sensor.rekuperator_numer_seryjny') }} |
+      | **Firmware sterownika** | {{ states('sensor.rekuperator_firmware') }} |
+      | **Nominalny przepływ nawiewu** | {{ states('sensor.rekuperator_nominal_nawiew') }} m³/h |
+      | **Nominalny przepływ wywiewu** | {{ states('sensor.rekuperator_nominal_wywiew') }} m³/h |

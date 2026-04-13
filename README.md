@@ -131,6 +131,49 @@ Copy the `custom_components/eltrue_thessla_green_airpack_ha/` folder to your HA 
 
 ---
 
+## Dashboard cards
+
+A ready-to-use Lovelace dashboard is included in [`lovelace-example.yaml`](lovelace-example.yaml).
+
+It provides:
+- **Status bar** — ON/OFF switch, operating mode, season selector
+- **Heat exchanger diagram** — live ASCII-art schematic with temperatures, efficiency, and airflow
+- **Gauges** — heat recovery efficiency, temperature delta, supply/exhaust airflow %
+- **Temperature list** — all 5 temperature sensors + computed delta and efficiency
+- **Controls** — manual intensity slider, special function selector, bypass thresholds
+- **Bypass section** — actuator state, active function, mode, threshold temperatures
+- **FPX pre-heater** — status and post-heater temperature
+- **Device nameplate** — manufacturer, model, serial, firmware, nominal airflows
+
+### How to add the cards
+
+**Option A — Add as a new view (recommended):**
+
+1. Open your dashboard → **Edit** → three-dot menu → **Raw configuration editor**
+2. Scroll to the `views:` section
+3. Paste the entire content of `lovelace-example.yaml` as a new entry under `views:`
+4. Save
+
+**Option B — Add individual cards:**
+
+1. Open your dashboard → **Edit** → **Add Card** → **Manual**
+2. Copy one `- type:` block from `lovelace-example.yaml`
+3. Paste into the YAML editor
+4. Repeat for each card
+
+> **Note:** Entity names assume the default `rekuperator` prefix. If you changed the device name during integration setup, adjust entity_id prefixes accordingly.
+
+### Preview
+
+```
+ZEWN  TZ1=8.2°C ──▶[≋≋≋≋≋≋≋≋≋≋]──▶ TN1=19.4°C  POKOJE
+              sprawność odzysku: 85%
+ATM.   TO=21.3°C  ◀──[≋≋≋≋≋≋≋≋≋≋]──◀  TP=21.5°C  POKOJE
+    nawiew: 180 m³/h               wywiew: 175 m³/h
+```
+
+---
+
 ## Tested hardware
 
 - Thessla Green **AirPack 450**, firmware 4.85
