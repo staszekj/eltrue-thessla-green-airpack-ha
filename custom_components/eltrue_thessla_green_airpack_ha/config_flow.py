@@ -12,7 +12,7 @@ from .const import DOMAIN, CONF_DEVICE_ID, DEFAULT_PORT, DEFAULT_DEVICE_ID
 
 STEP_SCHEMA = vol.Schema(
     {
-        vol.Required(CONF_HOST, default="192.168.3.29"): str,
+        vol.Required(CONF_HOST, default="192.168.1.200"): str,
         vol.Required(CONF_PORT, default=DEFAULT_PORT): int,
         vol.Required(CONF_DEVICE_ID, default=DEFAULT_DEVICE_ID): int,
     }
