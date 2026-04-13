@@ -145,6 +145,10 @@ It provides:
 - **FPX pre-heater** — status and post-heater temperature
 - **Device nameplate** — manufacturer, model, serial, firmware, nominal airflows
 
+### Preview
+
+![Lovelace dashboard preview](lovelace-example-preview.png)
+
 ### How to add the cards
 
 **Option A — Add as a new view (recommended):**
@@ -163,14 +167,6 @@ It provides:
 
 > **Note:** Entity names assume the default `rekuperator` prefix. If you changed the device name during integration setup, adjust entity_id prefixes accordingly.
 
-### Preview
-
-```
-ZEWN  TZ1=8.2°C ──▶[≋≋≋≋≋≋≋≋≋≋]──▶ TN1=19.4°C  POKOJE
-              sprawność odzysku: 85%
-ATM.   TO=21.3°C  ◀──[≋≋≋≋≋≋≋≋≋≋]──◀  TP=21.5°C  POKOJE
-    nawiew: 180 m³/h               wywiew: 175 m³/h
-```
 
 ---
 
