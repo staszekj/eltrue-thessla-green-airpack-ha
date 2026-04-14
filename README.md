@@ -21,6 +21,34 @@ Tested with: **AirPack 450**, firmware **4.85**, gateway Waveshare RS485 to ETH 
 
 ---
 
+## Wiring — AirPack to RS485 gateway
+
+The AirPack exposes its RS485 bus through standard RJ45 jacks on the back panel. You can connect it to the Waveshare gateway using a regular Ethernet (Cat5e/Cat6) patch cable — RJ45 plug on the AirPack side, bare wires stripped and screwed into the gateway terminal block on the other end.
+
+### AirPack side
+
+Plug the RJ45 connector into the **AirB** port on the AirPack unit:
+
+![RJ45 cable plugged into the AirB port on the AirPack](airpack-to-cable.jpg)
+
+> The AirPack has three RJ45 ports: **AirS**, **Air++**, and **AirB**. Use the **AirB** port for Modbus communication.
+
+### Gateway side (Waveshare RS485 to ETH)
+
+Strip three wires from the other end of the Ethernet cable and connect them to the screw terminal block on the Waveshare gateway:
+
+| Ethernet wire color | Gateway terminal | Function |
+|---------------------|------------------|----------|
+| Brown               | ⏚ (GND)         | Ground   |
+| White-orange        | 485B             | RS485 B (−) |
+| Orange              | 485A             | RS485 A (+) |
+
+![Bare wires connected to the Waveshare RS485 to ETH gateway terminal block](cable-to-RS485.jpg)
+
+> Only 3 of the 8 wires in the Ethernet cable are used. The remaining wires can be left unconnected (NC terminals on the gateway).
+
+---
+
 ## Entities
 
 ### Sensors (read-only)
