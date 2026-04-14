@@ -129,7 +129,7 @@ Copy the `custom_components/eltrue_thessla_green_airpack_ha/` folder to your HA 
 
 | Field | Default | Description |
 |-------|---------|-------------|
-| Gateway IP address | 192.168.3.29 | IP of the RS485 → ETH gateway |
+| Gateway IP address | 192.168.1.200 | IP of the RS485 → ETH gateway |
 | TCP port | 4196 | TCP listening port on the gateway |
 | Modbus device ID | 10 | Modbus slave / unit ID of the AirPack |
 
